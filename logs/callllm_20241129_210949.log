@@ -1,0 +1,346 @@
+2024-11-29 21:09:49.605017: test code: import java.util.ArrayList;
+
+/**
+ * This class contains an unordered list to store the information of the players.
+ * The NHLStats class contain methods to compute the statistic of the NHL players and display the information of the
+ * players.
+ */
+public class NHLStats {
+
+    //unordered list to store players
+    private List<PlayerRecord> players;
+
+    /**
+     * Constructor of the NHLStats
+     */
+    public NHLStats()
+    {
+        //initialize list to store NHL players
+        players = new List<PlayerRecord>();
+    }
+
+    /**
+     *Method to add a player to the unordered list
+     * @param p player with all their records
+     */
+    public void add(PlayerRecord p)
+    {
+        players.add(p);
+    }
+
+    /**
+     * Method to check if the list is empty
+     * @return return true if the list is empty, false if list is not empty
+     */
+    public boolean isEmpty()
+    {
+        return players.isEmpty();
+    }
+
+    /**
+     * Method to check if the list contain PlayerRecord p.
+     * @param p player with all their records
+     * @return return true if the list contain PlayerRecord p
+     */
+    public boolean contains(PlayerRecord p)
+    {
+        return players.contains(p);
+    }
+
+    /**
+     * Method to get the first item on the list.
+     * @return the first player on the list
+     */
+    public PlayerRecord first()
+    {
+        return players.first();
+    }
+
+    /**
+     * Method to get next item on the list
+     * @return the next player on the list
+     */
+    public PlayerRecord next()
+    {
+        return players.next();
+    }
+
+    /**
+     * Method to scan the list and display the list
+     */
+    public void enumerate()
+    {
+        players.enumerate();
+    }
+
+    /**
+     * Method to find the player with most point which is goals plus assists and display them.
+     */
+    public void mostPoint(){
+        int max = 0;
+        //get the first player on the list
+        PlayerRecord p = players.first();
+        //while loop to go through the list
+        while(p != null){
+            //if the total of goal and assist is more than max then assign it as the new max
+            if(p.getGoal() + p.getAssist() > max){
+                max = p.getGoal()+p.getAssist();
+            }
+            //get the next player in the list
+            p = players.next();
+        }
+
+        //get the first player in the list
+        p = players.first();
+
+        //while loop to go through the list
+        while(p != null){
+            //display the players with most points
+            if(p.getGoal() + p.getAssist() == max){
+                System.out.printf("Name: %-15s Team name: %-15s\n", p.getName(), p.getTeamName());
+            }
+            p = players.next();
+        }
+    }
+
+    /**
+     * Method to find the player with most aggressive which is the player with most penalty minutes and display them.
+     */
+    public void mostAggressive(){
+        int max = 0;
+        PlayerRecord p = players.first();
+        while(p != null){
+            //if the penalty minute is more than max then assign it as the new max
+            if(p.getPenalty() > max){
+                max = p.getPenalty();
+            }
+            p = players.next();
+        }
+
+        //get the first player in the list
+        p = players.first();;
+
+        while(p != null){
+            //display the players with most penalty minutes
+            if(p.getPenalty() == max){
+                System.out.printf("Name: %-15s Team name: %-15s Position: %-15s\n", p.getName(), p.getTeamName(),
+                        p.getPosition());
+            }
+            p = players.next();
+        }
+    }
+
+    /**
+     * Method to find the most valuable player which is the player with the most winning goal
+     */
+    public void mvp(){
+        int max = 0;
+        PlayerRecord p = players.first();
+        while(p != null){
+            if(p.getWinningGoal() > max){
+                max = p.getWinningGoal();
+            }
+            p = players.next();
+        }
+
+        p = players.first();;
+
+        while(p != null){
+            //display the players with most winning goal
+            if(p.getWinningGoal() == max){
+                System.out.printf("Name: %-15s Team name: %-15s\n", p.getName(), p.getTeamName());
+            }
+            p = players.next();
+        }
+    }
+
+    /**
+     * Method to find the most promising player which is the player with the most shots on goal
+     */
+    public void mostPromising(){
+        int max = 0;
+        PlayerRecord p = players.first();
+        while(p != null){
+            if(p.getShot() > max){
+                max = p.getShot();
+            }
+            p = players.next();
+        }
+
+        p = players.first();;
+
+        while(p != null){
+            //display the players with most shot on goal
+            if(p.getShot() == max){
+                System.out.printf("Name: %-15s Team name: %-15s\n", p.getName(), p.getTeamName());
+            }
+            p = players.next();
+        }
+    }
+
+    /**
+     * Method to find the team with most penalty minutes
+     */
+    public void mostPenalty(){
+        //arraylist to store team name present in the unordered list
+        ArrayList<String> teams = new ArrayList<String>();
+        //arraylist to store the teams total penalty minutes in the unordered list
+        ArrayList<Integer> penalty = new ArrayList<Integer>();
+        int max = 0;
+        boolean exist = false;
+        //get the first player in the list
+        PlayerRecord p = players.first();
+
+        //while loop to go through the unordered list
+        while(p != null){
+            //if the arraylist teams is not empty the run the statements below
+            if(teams.size() != 0) {
+                //for loop to go through the list to get the penalty minutes
+                for (int i = 0; i < teams.size(); i++) {
+                    //add the number of penalty minutes to the total penalty minutes in the score arraylist
+                    if (teams.get(i).equals(p.getTeamName())) {
+                        //set the penalty minutes in the score arraylist
+                        penalty.set(i, (penalty.get(i) + p.getPenalty()));
+                        exist = true;
+                    }
+                }
+            }
+
+            //if player does not exist then add the player to the teamNames arraylist and score arraylist
+            if(!exist){
+                teams.add(p.getTeamName());
+                penalty.add(p.getPenalty());
+            }
+
+            //get the next player in the list
+            p = players.next();
+
+            exist = false;
+        }
+
+        //set the max to the first score on the score arraylist
+        max = penalty.get(0);
+
+        //for loop to get the highest penalty
+        for(int i = 0; i < penalty.size(); i++){
+            if(penalty.get(i) > max){
+                max = penalty.get(i);
+            }
+        }
+
+        //get the name of the team that has the most penalty
+        for(int i = 0; i < teams.size(); i++){
+            if(penalty.get(i) == max){
+                System.out.printf("Team name: %-15s\n", teams.get(i));
+            }
+        }
+    }
+
+    /**
+     * Method to find the team with most winning goal
+     */
+    public void mostWinningGoal(){
+        //arraylist to store team name present in the unordered list
+        ArrayList<String> teamNames = new ArrayList<String>();
+        //arraylist to store the teams total winning goal in the unordered list
+        ArrayList<Integer> goal = new ArrayList<Integer>();
+        int max = 0;
+        boolean exist = false;
+        //get the first player in the list
+        PlayerRecord p = players.first();
+
+        //while loop to go through the unordered list
+        while(p != null){
+            if(teamNames.size() != 0) {
+                for (int i = 0; i < teamNames.size(); i++) {
+                    if (teamNames.get(i).equals(p.getTeamName())) {
+                        goal.set(i, (goal.get(i) + p.getWinningGoal()));
+                        exist = true;
+                    }
+                }
+            }
+
+            if(!exist){
+                //add the team name to the teamName arraylist
+                teamNames.add(p.getTeamName());
+                //add the number of winning goal to the goal arraylist
+                goal.add(p.getWinningGoal());
+            }
+
+            p = players.next();
+
+            exist = false;
+        }
+
+        //set the max to the first score on the score arraylist
+        max = goal.get(0);
+
+        //for loop to get the highest winning goal score
+        for(int i = 0; i < goal.size(); i++){
+            if(goal.get(i) > max){
+                max = goal.get(i);
+            }
+        }
+
+        //get the name of the team that has the highest winning goal score
+        for(int i = 0; i < teamNames.size(); i++){
+            if(goal.get(i) == max){
+                System.out.printf("Team name: %-15s\n", teamNames.get(i));
+            }
+        }
+    }
+}
+
+2024-11-29 21:09:56.307620: response_text: import .util.HashMap;
+import .util.Map;
+
+class ShoppingCart {
+    private Map<String, Integer> items;
+
+    public ShoppingCart() {
+        this.items = new HashMap<>();
+    }
+
+    public void addItem(String itemName, int quantity) {
+        items.put(itemName, items.getOrDefault(itemName, 0) + quantity);
+    }
+
+    public int getItemQuantity(String itemName) {
+        return items.getOrDefault(itemName, 0);
+    }
+
+    public Map<String, Integer> getItems() {
+        return new HashMap<>(items); //Return a copy to prevent modification from outside
+    }
+
+    public void removeItem(String itemName) {
+        items.remove(itemName);
+    }
+
+    public int getTotalItems() {
+        return items.values().stream().mapToInt(Integer::intValue).sum();
+    }
+
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem("Apple", 5);
+        cart.addItem("Banana", 3);
+        cart.addItem("Apple", 2); //Add more apples
+
+        System.out.println("Total Apples: " + cart.getItemQuantity("Apple"));
+        System.out.println("Total Bananas: " + cart.getItemQuantity("Banana"));
+        System.out.println("Total Items: " + cart.getTotalItems());
+
+
+        cart.removeItem("Banana");
+        System.out.println("Total Items after removing Bananas: " + cart.getTotalItems());
+
+    }
+}
+
+
+2024-11-29 21:09:56.309456: Generated code is different from the original.
+2024-11-29 21:09:56.315155: The generated code has syntax errors. Regenerating...

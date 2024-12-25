@@ -1,0 +1,84 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>contains</title>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.css" rel="stylesheet" />
+            <link href="{CSS_PLACEHOLDER}" rel="stylesheet" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/mode/clike/clike.min.js"></script>
+            <script src="{REJECT_JS_PLACEHOLDER}"></script>
+            <script src="{ACCEPT_JS_PLACEHOLDER}"></script>
+        </head>
+        <body>
+            <textarea id="refactoredCode">import .util.HashMap;
+import .util.Map;
+
+class ShoppingCart {
+    private Map<String, Integer> items;
+
+    public ShoppingCart() {
+        this.items = new HashMap<>();
+    }
+
+    public void addItem(String itemName, int quantity) {
+        items.put(itemName, items.getOrDefault(itemName, 0) + quantity);
+    }
+
+    public int getItemQuantity(String itemName) {
+        return items.getOrDefault(itemName, 0);
+    }
+
+    public Map<String, Integer> getItems() {
+        return new HashMap<>(items); //Return a copy to prevent modification from outside
+    }
+
+    public void removeItem(String itemName) {
+        items.remove(itemName);
+    }
+
+    public int getTotalItems() {
+        return items.values().stream().mapToInt(Integer::intValue).sum();
+    }
+
+}
+
+public class Main {
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+        cart.addItem("Apple", 5);
+        cart.addItem("Banana", 3);
+        cart.addItem("Apple", 2); //Add more apples
+
+        System.out.println("Total Apples: " + cart.getItemQuantity("Apple"));
+        System.out.println("Total Bananas: " + cart.getItemQuantity("Banana"));
+        System.out.println("Total Items: " + cart.getTotalItems());
+
+
+        cart.removeItem("Banana");
+        System.out.println("Total Items after removing Bananas: " + cart.getTotalItems());
+
+    }
+}
+
+</textarea>
+            <button id = "accept">Accept Changes</button> 
+            <button id="decline">Reject Changes</button>
+            <script>
+                CodeMirror.fromTextArea(document.getElementById("refactoredCode"), {
+                    mode: "text/x-java",
+                    indentWithTabs: true,
+                    smartIndent: true,
+                    lineNumbers: true,
+                    lineWrapping: true,
+                    matchBrackets: true,
+                    autofocus: true,
+                    theme: "darcula",
+                    readOnly: true,
+
+                });
+                
+            </script>
+        </body>
+        </html>
+        

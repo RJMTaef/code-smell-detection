@@ -1,0 +1,15 @@
+# Dependency directories
+node_modules
+
+# TypeScript build output
+/out/
+
+# OS-specific files
+.DS_Store
+
+# Misc
+.vscode-test/
+*.vsix
+resources/.config
+**/__pycache__/
+/node_modules/flatted/python/__pycache__/

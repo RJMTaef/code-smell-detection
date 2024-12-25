@@ -1,0 +1,50 @@
+# https://gitlab.com/viktomas/gitlab-example-extension/-/blob/master/.gitlab-ci.yml?ref_type=heads
+# https://github.com/ExplorViz/vs-code-extension/blob/main/.gitlab-ci.yml
+# https://stackoverflow.com/questions/50741264/gitlab-use-ci-to-check-commited-python-files-with-pylint
+
+# Just have lint & test stages for now. However, more stages(package & deployment) can be added later.
+stages:
+  - lint          
+  - test
+
+# Run linter to detect code smell for .ts files
+lint-ts:
+  image: node:20
+  stage: lint
+  script:
+    - npm ci
+    - npm run lint-all
+
+# Run linter to detect code smell for .py files
+lint-python:
+  image: "python:latest"
+  stage: lint
+  script:
+    - pip install pylint
+    - pylint .
+
+# Run js tests
+test-unit:
+  image: node:20
+  stage: test
+  script:
+    - npm ci
+    - npm run test-unit
+
+# run UI tests
+test-ui:
+  image: node:20
+  stage: test
+  script:
+    - npm ci
+    - export DISPLAY=:99.0
+    - apt-get update
+    - apt-get install -y xvfb libxtst6 libnss3 libgtk-3-0 libxss1 libasound2 libsecret-1-0 git
+    - xvfb-run -a npm run test-ui
+
+# run python tests
+test-python:
+  image: "python:latest"
+  stage: test
+  script:
+    - python -m unittest discover -s test

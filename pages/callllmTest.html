@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <title>{className}</title>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.css" rel="stylesheet" />
+            <link href="../src/backend/llm.css" rel="stylesheet" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/codemirror.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.58.3/mode/clike/clike.min.js"></script>
+            <script src="../src/backend/reject.js"></script>
+        </head>
+        <body>
+            <button id = "accept">Accept Changes</button> 
+            <button id="decline">Reject Changes</button>
+            <textarea id="refactoredCode">{refactoredCode}</textarea>
+            <script>
+                CodeMirror.fromTextArea(document.getElementById("refactoredCode"), {
+                    mode: "text/x-java",
+                    indentWithTabs: true,
+                    smartIndent: true,
+                    lineNumbers: true,
+                    lineWrapping: true,
+                    matchBrackets: true,
+                    autofocus: true,
+                    theme: "darcula",
+                    readOnly: true,
+
+                });
+            </script>
+        </body>
+        </html>
